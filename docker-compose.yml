@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  mlflow-server:
+    image: python:3.10-slim
+    container_name: local-mlflow-export
+    ports:
+      - "5001:5000"   # Host port 5001 -> Container port 5000
+      - "5002:5001"   # Host port 5001 -> Container port 5000
+    volumes:
+      - ./mlflow_data:/mlflow_data   # Persist all runs centrally
+      - ./entrypoint.sh:/entrypoint.sh
+    working_dir: /mlflow_data
+    entrypoint: ["/bin/sh", "/entrypoint.sh"]
+    restart: unless-stopped
